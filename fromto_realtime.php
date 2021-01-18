@@ -16,7 +16,5 @@
 	</tr>
 	<tr>
 		<td>To ID</td>
-		<td><input type="text" name="to" value="<?php echo $last_timestamp;?>"/></td>	
-		<td><button type="submit" form="form1" name="action" value="output">匯出</button></td>
-		<td><button type="submit" form="form1" name="action" value="delete">刪除</button></td>
+		<td><input type="text" name="to" value="<?php echo $last_timestamp;?>"/></td>
 	</tr>

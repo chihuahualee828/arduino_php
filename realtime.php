@@ -8,7 +8,7 @@
 	$show=mysqli_fetch_row($last_row);
 ?>	
 
-	<td style="padding: 5px 10px 5px 5px;"><?php echo $show[1];?></td>
+	<td style="padding: 5px 10px 5px 5px;"><?php echo $show[1];?> °C</td>
 	<td></td>
-	<td style="padding: 5px 10px 5px 100px;"><?php echo $show[2];?></td>
+	<td style="padding: 5px 10px 5px 80px;"><?php echo $show[2];?></td>
 	
