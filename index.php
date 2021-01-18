@@ -10,42 +10,52 @@
 	
 	$res = $mysqli->query("select * from dht11_test");	
 	
-	if(isset($_POST["from"]) and isset($_POST["action"]) == "output"){
-		print("output");
-		$from = $_POST["from"];
-		$to = $_POST["to"];
+	$myPost = array_values($_POST);
+	foreach($myPost as $each){
+		print($each."//");
+	}
 		
-		$res2 = $mysqli->query("select * FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-		$items = array();
-		while( $rs = mysqli_fetch_row($res2) ) {
-			$items[] = $rs;
+	
+	
+	if(isset($_POST["from"]) and isset($myPost[2])){
+		
+		if($myPost[2]=="output"){
+			$from = $_POST["from"];
+			$to = $_POST["to"];
+			
+			$res2 = $mysqli->query("select * FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
+			$items = array();
+			while( $rs = mysqli_fetch_row($res2) ) {
+				$items[] = $rs;
+			}
+			
+			//$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
+			
+			//Define the filename with current date
+			
+			$fileName = "itemdata-".date('Y-m-d-h-i-sa').".csv";
+			
+			//Set header information to export data in excel format
+			
+			$path=getenv("HOMEDRIVE").getenv("HOMEPATH")."\Desktop";
+			$fp=fopen($path."/".$fileName, 'w');
+			$head=['ID','tmp','humidity','time'];
+			fputcsv($fp, $head); 
+			foreach ($items as $fields) { 
+				fputcsv($fp, $fields); 
+			} 
+			fclose($fp);
+		}
+		if($myPost[2]=="delete"){
+			$from = $_POST["from"];
+			$to = $_POST["to"];
+			$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
 		}
 		
-		//$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-		
-		//Define the filename with current date
-		$fileName = "itemdata-".date('Y-m-d-h-i-sa').".csv";
-		//Set header information to export data in excel format
-		
-		$path=getenv("HOMEDRIVE").getenv("HOMEPATH")."\Desktop";
-		$fp=fopen($path."/".$fileName, 'w');
-		$head=['ID','tmp','humidity','time'];
-		fputcsv($fp, $head); 
-		foreach ($items as $fields) { 
-			fputcsv($fp, $fields); 
-		} 
-		fclose($fp);
 		
 		header('Location: index.php');
 	}
 	
-	if(isset($_POST["from"]) and isset($_POST["action"]) == "delete"){
-		print("tretret");
-		$from = $_POST["from"];
-		$to = $_POST["to"];
-		$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-		header('Location: index.php');
-	}
 	
 	
 	
@@ -71,7 +81,10 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/sb-admin-2.css?rndstr=<%=getRandomStr()%>" rel="stylesheet">
+	
+	
+	<link href="css/swipe.css" rel="stylesheet">
 
 </head>
 
@@ -81,12 +94,12 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i ></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">Arduino admin beta</div>
             </a>
@@ -121,6 +134,7 @@
                     </button>
 
                     <!-- Topbar Search -->
+					<!--
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -133,7 +147,7 @@
                             </div>
                         </div>
                     </form>
-
+					-->
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -178,49 +192,59 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                            <!--<i class="fas fa-file-alt text-white"></i>-->
                                         </div>
                                     </div>
+									<!--
                                     <div>
                                         <div class="small text-gray-500">December 12, 2019</div>
                                         <span class="font-weight-bold">A new monthly report is ready to download!</span>
                                     </div>
+									-->
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
+											<!--<i class="fas fa-donate text-white"></i>-->
                                         </div>
                                     </div>
+									<!--
                                     <div>
                                         <div class="small text-gray-500">December 7, 2019</div>
                                         $290.29 has been deposited into your account!
                                     </div>
+									-->
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                            <!--<i class="fas fa-exclamation-triangle text-white"></i>-->
                                         </div>
                                     </div>
+									<!--
                                     <div>
+									
                                         <div class="small text-gray-500">December 2, 2019</div>
                                         Spending Alert: We've noticed unusually high spending for your account.
                                     </div>
+									-->
                                 </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <!--<a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>-->
                             </div>
                         </li>
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
+							<!--
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
+								
                                 <span class="badge badge-danger badge-counter">7</span>
                             </a>
+							-->
                             <!-- Dropdown - Messages -->
+							<!--
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">
@@ -276,6 +300,7 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
+							-->
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -285,24 +310,28 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">NCCU</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle "
+                                    src="img/nervous-chihuahua.jpg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+								<!--
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
+								-->
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
+								<!--
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
                                 </a>
+								-->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -320,18 +349,19 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+					<!--
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Sensors Dashboard</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
-
+					-->
                     <!-- Content Row -->
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
 						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseDHT"
-							aria-expanded="true" aria-controls="collapseDHT">
+							aria-expanded="true" aria-controls="collapseDHT" onclick="hideFunction('collapseDHT')">
 							<span>
 							<div >
 								<div class="card border-left-primary shadow h-100 py-2">
@@ -345,7 +375,7 @@
 														<tr>
 															<td style="padding: 10px 10px 5px 5px;">tmp</td>
 															<td></td>
-															<td style="padding: 10px 10px 5px 100px;">humidity</td>
+															<td style="padding: 10px 10px 5px 80px;">humidity</td>
 																
 														</tr>
 														
@@ -355,7 +385,7 @@
 															-->
 															<td style="padding: 5px 10px 5px 5px;"></td>
 															<td></td>
-															<td style="padding: 5px 10px 5px 100px;"></td>
+															<td style="padding: 5px 10px 5px 80px;"></td>
 															<!--
 																<td><button onclick="upd(<?php echo $rs[0];?>)">選取</button></td>
 															-->
@@ -381,7 +411,7 @@
 						
                         <!-- Earnings (Monthly) Card Example -->
 						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse2"
-							aria-expanded="true" aria-controls="collapse2">
+							aria-expanded="true" aria-controls="collapse2" onclick="hideFunction('collapse2')">
 						<span>
                         <div>
                             <div class="card border-left-success shadow h-100 py-2">
@@ -420,7 +450,7 @@
                         <!-- Earnings (Monthly) Card Example -->
 						
 						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse3"
-							aria-expanded="true" aria-controls="collapse3">
+							aria-expanded="true" aria-controls="collapse3" onclick="hideFunction('collapse3')">
 						<span>
                         <div>
                             <div class="card border-left-info shadow h-100 py-2">
@@ -470,7 +500,7 @@
 						
                         <!-- Pending Requests Card Example -->
 						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse4"
-							aria-expanded="true" aria-controls="collapse4">
+							aria-expanded="true" aria-controls="collapse4" onclick="hideFunction('collapse4')">
 						<span>
                         <div>
                             <div class="card border-left-warning shadow h-100 py-2">
@@ -516,6 +546,27 @@
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
 											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
+												Set threshold : </div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800" >
+												<div style="height:100px;overflow:auto;overflow-x:hidden;">
+												<table>
+													<tr>
+														<td style="padding: 10px 10px 5px 5px;">tmp</td>
+														<td></td>
+														<td style="padding: 10px 10px 5px 40px;">humidity</td>
+			
+													</tr>
+													<tr>
+														<td><input type="text" name="tmp_tsh" placeholder="Input Temperature(°C) Threshold"></td>
+														<td></td>
+														<td><input type="text" name="hmd_tsh" placeholder="Input Humidity Threshold"></td>
+													</tr>
+												</table>	
+												</div>
+											</div>
+											
+											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
+											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
 												Past Data : </div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800" >
 												<div style="height:500px;overflow:auto;overflow-x:hidden;">
@@ -545,21 +596,34 @@
 												</table>
 												</div>
 												<form action="" method="POST" enctype="multipart/form-data" id="form1" style="padding: 50px 10px 5px 5px;">
-													<table id="fromto">
-														<tr>
-															<td>From ID:</td>
-															<td><input type="text" name="from" value=""/></td>					
-														</tr>
-														<tr>
-															<td>To ID</td>
-															<td><input type="text" name="to" value=""/></td>	
-															<td><button type="submit" form="form1" name="action" value="output">匯出</button></td>
-															<td><button type="submit" form="form1" name="action" value="delete">刪除</button></td>
-														</tr>
-													</table>
 													
+													<table>
+													<td>
+														<div>
+															<table id="fromto">
+																<tr>
+																	<td>From ID:</td>
+																	<td><input type="text" name="from" value=""/></td>					
+																</tr>
+																<tr>
+																	<td>To ID</td>
+																	<td><input type="text" name="to" value=""/></td>	
+																	
+																</tr>
+																
+															</table>
+														</div>
+													</td>
+													<td>
+														<div>
+															<table>
+																<tr><button type="submit" form="form1" name="output" value="output" onclick="return popup1()">匯出</button></td>
+																<tr><button type="submit" form="form1" name="delete" value="delete" onclick="return popup2()">刪除</button></td>
+															</table>
+														</div>
+													</td>
+													</table>
 												</form>
-												
 											</div>
 										</div>
 									</div>
@@ -590,7 +654,7 @@
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">tmp</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 120px;">humidity</td>
+														<td style="padding: 10px 10px 5px 120px;">ph</td>
 														<td></td>
 														<td style="padding: 10px 5px 5px 120px;">timestamp</td>
 														<td style="padding: 10px 100px 5px 700px;"></td>
@@ -699,10 +763,11 @@
                     <!-- Content Row -->
 					<!-- chart -->
 					
-                    <div class="row">
+                    <div class="row stack">
 						
-                        <!-- Area Chart -->
-                        <div class="col-xl-12 col-lg-7">
+                        <!-- Area Chart add swipe-->
+						
+                        <div class="col-xl-12 col-lg-7 cardswap">
                             <div class="card border-left-primary shadow mb-4">
                                 <!-- Card Header - Dropdown -->
 								
@@ -759,6 +824,132 @@
                             </div>
 							
                         </div>
+						
+						
+						<!--sensor2 chart-->
+						<div class="col-xl-12 col-lg-7 cardswap">
+                            <div class="card border-left-success shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+								
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor2_tmp
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+								<div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor2_ph
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+								<!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+                            </div>
+							
+                        </div>
+						
+						
+						<!--sensor3 chart-->
+						<div class="col-xl-12 col-lg-7 cardswap">
+                            <div class="card border-left-info shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+								
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor3_xx
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+								<div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor3_yyy
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+								<!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+                            </div>
+							
+                        </div>
+						
+						<!--sensor4 chart-->
+						<div class="col-xl-12 col-lg-7 cardswap">
+                            <div class="card border-left-warning shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+								
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor4_??
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+								<div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"> Sensor4_@@@
+                                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <!--<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+                                        </a>
+										
+                                    </div>
+                                </div>
+								<!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                    </div>
+                                </div>
+                            </div>
+							
+                        </div>
+						
 						
                     </div>
 					
@@ -984,8 +1175,10 @@
 
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-pie-demo.js"></script>
-
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<script src="js/swipe.js"></script>
 	<script>
 		$(document).ready(function(){
 			$("#dht11_block").load("realtime.php");
@@ -1021,13 +1214,50 @@
 		});
 		
 		
+		
+		function hideFunction(id){
+		  var list=["collapseDHT","collapse2","collapse3","collapse4"];
+		  list.splice(list.indexOf(id),1);
+		  console.log(list);
+		  var a = document.getElementById(id);
+		  
+		  var x = document.getElementById(list[0]);
+		  var y = document.getElementById(list[1]);
+		  var z = document.getElementById(list[2]);
+		  x.style.display = "none";
+		  y.style.display = "none";
+		  z.style.display = "none";
+		  a.style.display = "";
+		}
+		
+		
+		function popup1(){
+			return confirm("Are you sure you want to export?");
+		}
+		function popup2(){
+			return confirm("Are you sure you want to delete?");
+		}
+			
+		
+		function overlay(){
+			var cookieValue = document.getElementById('dht11_block').getAttribute('td');
+			if(parseInt(cookieValue)){
+			
+				
+				alert("temperature is too high");
+			}
+		}
+	
+	
 	
 		$('.divexpand').click(function(){
 			$(this).find('.divcollapse').slideToggle('slow');
 		});
+		
 	
 	</script>
-
+		
+	   
 </body>
 
 </html>
