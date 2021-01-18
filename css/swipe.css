@@ -1,0 +1,55 @@
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*stacked card css here*/
+
+.stack {
+  position: relative;
+}
+
+.cardswap {
+  width: 100%;
+  min-height: 10%;
+  background-color: white;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 3%);
+  display: grid;
+  border-radius: 0.5rem;
+  color: #00000080;
+  transition: transform 100ms;
+}
+.cardswap: nth-last-child(n+3){
+	--y: calc(-50% -600px);
+	transform: translate(-50%, var(--y)) scale(0.5);
+	
+}
+.cardswap: nth-last-child(3){
+	--y: calc(-50% -300px);
+	transform: translate(-50%, var(--y)) scale(0.75);
+}
+.cardswap: nth-last-child(2){
+	--y: calc(-50%);
+	transform: translate(-50%, var(--y)) scale(1);
+}
+.cardswap: nth-last-child(1){
+	--y: calc(-50% + 300px);
+	transform: translate(-50%, var(--y)) scale(1.5);
+}
+
+@keyframes swap {
+  50% {
+    transform: translate(-50%, calc(var(--y) - 250px)) scale(2) rotate(-50deg);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translate(-50%, calc(var(--y) - 15px)) scale(2);
+    z-index: -1;
+  }
+}
