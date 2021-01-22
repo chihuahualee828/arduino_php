@@ -84,17 +84,16 @@
     <link href="css/sb-admin-2.css?rndstr=<%=getRandomStr()%>" rel="stylesheet">
 	
 	
-	<link href="css/swipe.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" >
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled " id="accordionSidebar" >
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
@@ -364,7 +363,7 @@
 							aria-expanded="true" aria-controls="collapseDHT" onclick="hideFunction('collapseDHT')">
 							<span>
 							<div >
-								<div class="card border-left-primary shadow h-100 py-2">
+								<div class="card border-left-primary shadow h-100 py-2" id="dht11_card">
 									<div class="card-body" >
 										<div class="row no-gutters align-items-center" >
 											<div >
@@ -376,7 +375,7 @@
 															<td style="padding: 10px 10px 5px 5px;">tmp</td>
 															<td></td>
 															<td style="padding: 10px 10px 5px 80px;">humidity</td>
-																
+															
 														</tr>
 														
 														<tr id="dht11_block">
@@ -419,17 +418,24 @@
                                     <div class="row no-gutters align-items-center">
                                         <div >
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style=" font-size:30px;">
-                                                Sensor2</div>
+                                                SENSOR2</div>
 												
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 												<table>
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">tmp</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 100px;">ph</td>
-															
+														<td style="padding: 10px 10px 5px 80px;">ph</td>
+														<td style="padding: 10px 10px 5px 48px;"></td>
 													</tr>
-													
+													<tr id="sensor2_block">
+														<!--
+															load from realtime
+														-->
+														<td style="padding: 5px 10px 5px 5px;">20.11 °C</td>
+														<td></td>
+														<td style="padding: 5px 10px 5px 80px;">7</td>
+													</tr>
 												</table>
 											</div>
                                         </div>
@@ -464,10 +470,18 @@
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">xx</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 100px;">yyy</td>
-															
+														<td style="padding: 10px 10px 5px 140px;">yy</td>
+														<td style="padding: 10px 10px 5px 44px;"></td>	
 													</tr>
-													
+													<tr id="sensor3_block">
+														<!--
+															load from realtime
+														-->
+														<td style="padding: 5px 10px 5px 5px;">87</td>
+														<td></td>
+														<td style="padding: 5px 10px 5px 140px;">87</td>
+														
+													</tr>
 												</table>
 											</div>
                                             <div class="row no-gutters align-items-center">
@@ -514,10 +528,18 @@
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">??</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 100px;">@@@</td>
-															
+														<td style="padding: 10px 10px 5px 140px;">@@@</td>
+														<td style="padding: 10px 10px 5px 10px;"></td>	
 													</tr>
-													
+													<tr id="sensor4_block">
+														<!--
+															load from realtime
+														-->
+														<td style="padding: 5px 10px 5px 5px;">87</td>
+														<td></td>
+														<td style="padding: 5px 10px 5px 140px;">87</td>
+														
+													</tr>
 												</table>
 											</div>
                                         </div>
@@ -535,41 +557,48 @@
                     </div>
 					
 					<!-- Content Row -->
-
+					
                     <div class="row">
 
 						<div id="collapseDHT" class="collapse" >
 							<div class="col-xl-8 col-lg-7">
 							<div class="card border-left-primary shadow h-10 py-2">
-								<div class="card-body">
+								<div class="card-body" >
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
 											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
 												Set threshold : </div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800" >
-												<div style="height:100px;overflow:auto;overflow-x:hidden;">
+												<div style="height:100px;">
 												<table>
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">tmp</td>
+														<td style="padding: 10px 10px 5px 5px;">
+															<input type="text" name="tmp_tsh" placeholder="30" size="4" id="tmp_tsh" />
+														</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 40px;">humidity</td>
-			
-													</tr>
-													<tr>
-														<td><input type="text" name="tmp_tsh" placeholder="Input Temperature(°C) Threshold"></td>
+														<td style="padding: 10px 10px 5px 60px;">humidity</td>
+														<td style="padding: 10px 10px 5px 5px;">
+															<input type="text" name="hmd_tsh" placeholder="40" size="4" id="hmd_tsh" />
+														</td>
 														<td></td>
-														<td><input type="text" name="hmd_tsh" placeholder="Input Humidity Threshold"></td>
+														<td style="padding: 10px 10px 5px 30px;">
+															<button class="bg-light border-primary rounded" onclick="saveValue('tmp_tsh','hmd_tsh')" id="tsh_set_btn">set</button>
+														</td>
 													</tr>
+													
 												</table>	
 												</div>
 											</div>
+											
+											<div class="dropdown-divider"></div>
 											
 											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
 											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
 												Past Data : </div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800" >
-												<div style="height:500px;overflow:auto;overflow-x:hidden;">
+												<div style="height:400px;overflow:auto;">
 												<table >
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">tmp</td>
@@ -614,11 +643,26 @@
 															</table>
 														</div>
 													</td>
-													<td>
+													<td style="padding: 10px 10px 5px 20px;">
 														<div>
 															<table>
-																<tr><button type="submit" form="form1" name="output" value="output" onclick="return popup1()">匯出</button></td>
-																<tr><button type="submit" form="form1" name="delete" value="delete" onclick="return popup2()">刪除</button></td>
+																<tr>
+																<td style="padding: 10px 10px 5px 1px;">
+																	<button class="bg-light border-primary rounded" type="submit" form="form1" name="output" value="output" onclick="return popup1()">
+																	<div class="text-xs font-weight-bold text-primary" 
+																		style=" font-size:20px; padding: 5px 5px 5px 5px;">
+																		Export
+																	</div>
+																	</button></td>
+																
+																<td style="padding: 10px 10px 5px 3px;">
+																	<button class="bg-light border-primary rounded" type="submit" form="form1" name="delete" value="delete" onclick="return popup2()">
+																	<div class="text-xs font-weight-bold text-primary" 
+																		style=" font-size:20px; padding: 5px 5px 5px 5px;">
+																		Delete
+																	</div>
+																	</button></td>
+																</tr>
 															</table>
 														</div>
 													</td>
@@ -763,7 +807,7 @@
                     <!-- Content Row -->
 					<!-- chart -->
 					
-                    <div class="row stack">
+                    <div class="row stack ">
 						
                         <!-- Area Chart add swipe-->
 						
@@ -1123,7 +1167,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Arduino Dashboard Beta@NCCUMISLAB18</span>
                     </div>
                 </div>
             </footer>
@@ -1186,12 +1230,30 @@
 				$("#dht11_block").load("realtime.php");
 			 }, 3000);
 		});
+		
+		$("#dht11_data_block").load("realtime_past_data.php");
+		
+		
 		$(document).ready(function(){
-			$("#dht11_data_block").load("realtime_past_data.php");
+			var last_id_global=-1;
 			 setInterval(function(){
-				$("#dht11_data_block").load("realtime_past_data.php");
+				$.get('realtime_past_data_append.php', function(data){
+					if(last_id_global!=parseInt(data.split("<tr")[0])){
+						if(last_id_global==-1){
+							last_id_global=parseInt(data.split("<tr")[0]);
+						}else{
+							last_id_global=parseInt(data.split("<tr")[0]);
+							$("#dht11_data_block").append(data.split(last_id_global).pop());
+						}
+					}
+					
+				});
 			 }, 3000);
 		});
+		
+		
+		
+		
 		$(document).ready(function(){
 			$("#fromto").load("fromto_realtime.php");
 			 setInterval(function(){
@@ -1237,18 +1299,66 @@
 		function popup2(){
 			return confirm("Are you sure you want to delete?");
 		}
-			
+		
+		
+		$(document).ready(function(){
+			overlay();
+			setInterval(function(){
+				overlay();
+			}, 3000);
+		});
 		
 		function overlay(){
-			var cookieValue = document.getElementById('dht11_block').getAttribute('td');
-			if(parseInt(cookieValue)){
-			
-				
-				alert("temperature is too high");
+			var cookieValue = document.getElementById('dht11_block').getElementsByTagName("td")[0].innerText;
+			var tmp_tsh_value = getSavedValue("tmp_tsh");
+			//console.log(cookieValue, parseInt(tmp_tsh_value)); 
+			if(!document.getElementById("dht11_card").classList.contains('card-warning')){
+				if(parseInt(cookieValue) >= parseInt(tmp_tsh_value)){
+					document.getElementById("dht11_card").classList.remove('card');
+					document.getElementById("dht11_card").classList.add('card-warning');
+					alert("Temperature high");
+				}else{
+					if(document.getElementById("dht11_card").classList.contains('card-warning') ){
+						document.getElementById("dht11_card").classList.remove('card-warning');
+						document.getElementById("dht11_card").classList.add('card');
+					}
+				}
+			}else{
+				if(parseInt(cookieValue) < parseInt(tmp_tsh_value)){
+					document.getElementById("dht11_card").classList.remove('card-warning');
+					document.getElementById("dht11_card").classList.add('card');
+				}
 			}
+			
 		}
-	
-	
+		
+		
+		document.getElementById("tmp_tsh").value = getSavedValue("tmp_tsh");    // set the value to this input
+		document.getElementById("hmd_tsh").value = getSavedValue("hmd_tsh");   // set the value to this input
+		/* Here you can add more inputs to set value. if it's saved */
+		
+		
+        //Save the value function - save it to localStorage as (ID, VALUE)
+        function saveValue(x, y){
+            var id1 = x;  // get the sender's id to save it . 
+            var val1 = document.getElementById(x).value; // get the value. 
+			var id2 = y;
+			var val2 = document.getElementById(y).value;
+            localStorage.setItem(id1, val1);// Every time user writing something, the localStorage's value will override . 
+			localStorage.setItem(id2, val2);
+		}
+
+        //get the saved value function - return the value of "v" from localStorage. 
+        function getSavedValue  (v){
+            if (!localStorage.getItem(v)) {
+                return "";// You can change this to your defualt value. 
+            }
+            return localStorage.getItem(v);
+        }
+		
+		
+		
+		
 	
 		$('.divexpand').click(function(){
 			$(this).find('.divcollapse').slideToggle('slow');

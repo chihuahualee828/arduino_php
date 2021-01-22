@@ -3,5 +3,5 @@
 	
 ?>	
 
-    <script type="text/javascript" src="js/demo/chart-area-demo.js?rndstr=<%= getRandomStr() %>"></script>
+    <script type="text/javascript" src="js/demo/chart-area-demo.js"></script>
     <canvas id="myAreaChart2"></canvas>
