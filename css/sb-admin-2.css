@@ -588,6 +588,7 @@ pre code {
   flex-wrap: wrap;
   margin-right: -0.75rem;
   margin-left: -0.75rem;
+  
 }
 
 .no-gutters {
@@ -4457,6 +4458,18 @@ input[type="button"].btn-block {
   min-width: 0;
   word-wrap: break-word;
   background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+}
+
+.card-warning {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #e74a3b;
   background-clip: border-box;
   border: 1px solid #e3e6f0;
   border-radius: 0.35rem;
@@ -10939,7 +10952,54 @@ form.user .btn-user {
   width: 12.5rem;
 }
 
+/* swipe.css*/
+.stack {
+  position: relative;
+}
 
+.cardswap {
+  width: 100%;
+  min-height: 10%;
+  background-color: transparent;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  padding-bottom:100px;
+  transform: translate(-50%, 3%);
+  display: grid;
+  border-radius: 0.5rem;
+  color: #00000080;
+  transition: transform 100ms;
+}
+.cardswap: nth-last-child(n+3){
+	--y: calc(-50% -600px);
+	transform: translate(-50%, var(--y)) scale(0.5);
+	
+}
+.cardswap: nth-last-child(3){
+	--y: calc(-50% -300px);
+	transform: translate(-50%, var(--y)) scale(0.75);
+}
+.cardswap: nth-last-child(2){
+	--y: calc(-50%);
+	transform: translate(-50%, var(--y)) scale(1);
+}
+.cardswap: nth-last-child(1){
+	--y: calc(-50% + 300px);
+	transform: translate(-50%, var(--y)) scale(1.5);
+}
+
+@keyframes swap {
+  50% {
+    transform: translate(-50%, calc(var(--y) - 250px)) scale(2) rotate(-50deg);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translate(-50%, calc(var(--y) - 15px)) scale(2);
+    z-index: -1;
+  }
+}
+/* swipe.css*/
 
 @-webkit-keyframes noise-anim {
   0% {
@@ -11234,6 +11294,10 @@ form.user .btn-user {
 footer.sticky-footer {
   padding: 2rem 0;
   flex-shrink: 0;
+  position: absolute; 
+  bottom: 0; 
+  width: 100%; 
+  
 }
 
 footer.sticky-footer .copyright {
