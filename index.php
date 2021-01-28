@@ -8,50 +8,51 @@
 	//刪除功能
 	
 	
-	$res = $mysqli->query("select * from dht11_test");	
+	$res = $mysqli->query("select * from dht11");	
 	
 	$myPost = array_values($_POST);
+	/*
 	foreach($myPost as $each){
 		print($each."//");
-	}
-		
+	}*/
 	
 	
-	if(isset($_POST["from"]) and isset($myPost[2])){
-		
-		if($myPost[2]=="output"){
-			$from = $_POST["from"];
-			$to = $_POST["to"];
+	if(isset($myPost[8])){
+		if($myPost[0] != "" and $myPost[4] != "" ){
+			$from = $myPost[0]." ".$myPost[1].":".$myPost[2].":".$myPost[3];
+			$to = $myPost[4]." ".$myPost[5].":".$myPost[6].":".$myPost[7];
 			
-			$res2 = $mysqli->query("select * FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-			$items = array();
-			while( $rs = mysqli_fetch_row($res2) ) {
-				$items[] = $rs;
+			if($myPost[8]=="output"){
+				
+				
+				$res2 = $mysqli->query("select * FROM `dht11` WHERE `date` >= '$from' and `date` <= '$to'");
+				$items = array();
+				while( $rs = mysqli_fetch_row($res2) ) {
+					$items[] = $rs;
+				}
+				
+				//$res3 = $mysqli->query("DELETE FROM `dht11` WHERE `date` >= '$from' and `date` <= '$to'");
+				
+				//Define the filename with current date
+				
+				$fileName = "itemdata-".date('Y-m-d-h-i-sa').".csv";
+				
+				//Set header information to export data in excel format
+				
+				$path=getenv("HOMEDRIVE").getenv("HOMEPATH")."\Desktop";
+				$fp=fopen($path."/".$fileName, 'w');
+				$head=['ID','tmp','humidity','time'];
+				fputcsv($fp, $head); 
+				foreach ($items as $fields) { 
+					fputcsv($fp, $fields); 
+				} 
+				fclose($fp);
 			}
-			
-			//$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-			
-			//Define the filename with current date
-			
-			$fileName = "itemdata-".date('Y-m-d-h-i-sa').".csv";
-			
-			//Set header information to export data in excel format
-			
-			$path=getenv("HOMEDRIVE").getenv("HOMEPATH")."\Desktop";
-			$fp=fopen($path."/".$fileName, 'w');
-			$head=['ID','tmp','humidity','time'];
-			fputcsv($fp, $head); 
-			foreach ($items as $fields) { 
-				fputcsv($fp, $fields); 
-			} 
-			fclose($fp);
+			if($myPost[8]=="delete"){
+				
+				$res3 = $mysqli->query("DELETE FROM `dht11` WHERE `date` >= '$from' and `date` <= '$to'");
+			}
 		}
-		if($myPost[2]=="delete"){
-			$from = $_POST["from"];
-			$to = $_POST["to"];
-			$res3 = $mysqli->query("DELETE FROM `dht11_test` WHERE `date` >= '$from' and `date` <= '$to'");
-		}
-		
 		
 		header('Location: index.php');
 	}
@@ -68,7 +69,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -100,7 +101,8 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i ></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Arduino admin beta</div>
+				<div >Arduino admin beta</div>
+                <!--<div class="sidebar-brand-text mx-3">Arduino admin beta</div>-->
             </a>
 
             <!-- Divider -->
@@ -125,7 +127,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="content-zoom2 navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -309,8 +311,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">NCCU</span>
-                                <img class="img-profile rounded-circle "
-                                    src="img/nervous-chihuahua.jpg">
+                                <img class="img-profile rounded-circle"
+                                    src="img/nervous-chihuahua.jpg" >
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -321,7 +323,7 @@
                                     Profile
                                 </a>
 								-->
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="settings.php">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
@@ -345,7 +347,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid content-zoom" >
 
                     <!-- Page Heading -->
 					<!--
@@ -356,6 +358,7 @@
                     </div>
 					-->
                     <!-- Content Row -->
+					<div class="row-master" >
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -450,9 +453,10 @@
                         </div>
 						</span>
 						</a>
+					</div>
 						
 						
-
+					<div class="row">
                         <!-- Earnings (Monthly) Card Example -->
 						
 						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse3"
@@ -463,23 +467,24 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div >
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style=" font-size:30px;">Sensor 3
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style=" font-size:30px;">
+											Sensor3
                                             </div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
 												<table>
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">xx</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 140px;">yy</td>
-														<td style="padding: 10px 10px 5px 44px;"></td>	
+														<td style="padding: 10px 10px 5px 100px;">yy</td>
+														<td style="padding: 10px 10px 5px 45px;"></td>	
 													</tr>
 													<tr id="sensor3_block">
 														<!--
 															load from realtime
 														-->
-														<td style="padding: 5px 10px 5px 5px;">87</td>
+														<td style="padding: 5px 10px 5px 5px;">77.7 U</td>
 														<td></td>
-														<td style="padding: 5px 10px 5px 140px;">87</td>
+														<td style="padding: 5px 10px 5px 100px;">21</td>
 														
 													</tr>
 												</table>
@@ -522,22 +527,22 @@
                                     <div class="row no-gutters align-items-center">
                                         <div >
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style=" font-size:30px;">
-                                                Sensor 4</div>
+                                                Sensor4</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 												<table>
 													<tr>
 														<td style="padding: 10px 10px 5px 5px;">??</td>
 														<td></td>
-														<td style="padding: 10px 10px 5px 140px;">@@@</td>
-														<td style="padding: 10px 10px 5px 10px;"></td>	
+														<td style="padding: 10px 10px 5px 100px;">@@@</td>
+														<td style="padding: 10px 10px 5px 15px;"></td>	
 													</tr>
 													<tr id="sensor4_block">
 														<!--
 															load from realtime
 														-->
-														<td style="padding: 5px 10px 5px 5px;">87</td>
+														<td style="padding: 5px 10px 5px 5px;">55.7 U</td>
 														<td></td>
-														<td style="padding: 5px 10px 5px 140px;">87</td>
+														<td style="padding: 5px 10px 5px 100px;">87</td>
 														
 													</tr>
 												</table>
@@ -555,11 +560,11 @@
 						
 						
                     </div>
-					
+					</div>
 					<!-- Content Row -->
 					
-                    <div class="row">
-
+                    <div class="row-shrink" >
+						
 						<div id="collapseDHT" class="collapse" >
 							<div class="col-xl-8 col-lg-7">
 							<div class="card border-left-primary shadow h-10 py-2">
@@ -594,18 +599,46 @@
 											
 											<div class="dropdown-divider"></div>
 											
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
-											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
-												Past Data : </div>
+											<div>
+											<table>
+												<tr>
+													<td>
+														<div class="text-xs font-weight-bold text-primary text-uppercase mb-1" 
+														style=" font-size:30px; padding: 10px 10px 25px 3px; " >	
+															Past Data :	
+														</div>
+													</td>
+													
+													
+													<td >
+														<div style="padding: 10px 10px 25px 3px; ">
+															<select id="sort" name="sortby" onchange="">
+																<option>--</option>
+																
+															</select>
+														</div>
+													</td>
+													<td>
+														<div style="padding: 10px 10px 25px 3px; ">
+															<select id="sort_order" name="sort_order" onchange="sortOrder()">
+																<option>--</option>
+															</select>
+														</div>
+													</td>
+												</tr>
+											</table>
+											</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800" >
 												<div style="height:400px;overflow:auto;">
-												<table >
+												<table id="dht11_data_table">
 													<tr>
-														<td style="padding: 10px 10px 5px 5px;">tmp</td>
-														<td></td>
-														<td style="padding: 10px 10px 5px 120px;">humidity</td>
-														<td></td>
-														<td style="padding: 10px 5px 5px 120px;">timestamp</td>
+														
+														<th style="padding: 10px 10px 5px 5px;" onclick="sortDht11Table(0)">tmp</th>
+														<td id="tmp_sort" class="fas fa-sort" style="padding: 10px 0px 5px 0px;"></td>
+														<th style="padding: 10px 10px 5px 120px;" onclick="sortDht11Table(1)">humidity</th>
+														<td id="hmd_sort" class="fas fa-sort" style="padding: 10px 0px 5px 0px;"></td>
+														<th style="padding: 10px 5px 5px 120px;" onclick="sortDht11Table(2)">timestamp</th>
+														<td id="date_sort" class="fas fa-sort" style="padding: 10px 0px 5px 0px;"></td>
 														<td style="padding: 10px 100px 5px 700px;"></td>
 													</tr>
 													
@@ -629,17 +662,51 @@
 													<table>
 													<td>
 														<div>
-															<table id="fromto">
+															<table>
+															<tbody>
 																<tr>
-																	<td>From ID:</td>
-																	<td><input type="text" name="from" value=""/></td>					
-																</tr>
-																<tr>
-																	<td>To ID</td>
-																	<td><input type="text" name="to" value=""/></td>	
+																	<td>From :</td>
+																	<td></td>
+																	<td>
+																		<input id="date" type="date" name="date">
+																	</td>
+																	<td>
+																		<select id="hour" name="hour">
+																		</select>
+																	</td>
 																	
+																	<td>
+																		<select id="min" name="min">
+																		</select>
+																	</td>
+																	
+																	<td>
+																		<select id="sec" name="sec">
+																		</select>
+																	</td>
 																</tr>
-																
+																<tr>
+																	<td>To :</td>
+																	<td></td>
+																	<td>
+																		<input id="date2" type="date" name="date2">
+																	</td>
+																	<td>
+																		<select id="hour2" name="hour2">
+																		</select>
+																	</td>
+																	
+																	<td>
+																		<select id="min2" name="min2">
+																		</select>
+																	</td>
+																	
+																	<td>
+																		<select id="sec2" name="sec2">
+																		</select>
+																	</td>
+																</tr>
+															</tbody>	
 															</table>
 														</div>
 													</td>
@@ -682,7 +749,7 @@
 					
 					<!-- Content Row -->
 
-                    <div class="row">
+                    <div class="row-shrink">
 
 						<div id="collapse2" class="collapse" >
 							<div class="col-xl-8 col-lg-7">
@@ -693,6 +760,7 @@
 											<div class="text-xs font-weight-bold text-success text-uppercase mb-1" 
 											style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
 												Past Data : </div>
+
 											<div class="h5 mb-0 font-weight-bold text-gray-800" >
 												<table >
 													<tr>
@@ -718,7 +786,7 @@
 					
 					<!-- Content Row -->
 
-                    <div class="row">
+                    <div class="row-shrink">
 
 						<div id="collapse3" class="collapse" >
 							<div class="col-xl-8 col-lg-7">
@@ -757,7 +825,7 @@
 					
 					<!-- Content Row -->
 
-                    <div class="row">
+                    <div class="row-shrink">
 
 						<div id="collapse4" class="collapse" >
 							<div class="col-xl-8 col-lg-7">
@@ -807,7 +875,7 @@
                     <!-- Content Row -->
 					<!-- chart -->
 					
-                    <div class="row stack ">
+                    <div class="row-chart stack ">
 						
                         <!-- Area Chart add swipe-->
 						
@@ -1010,10 +1078,10 @@
 							<!--
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Database load</h6>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
+                                    <h4 class="small font-weight-bold">DHT11 <span
                                             class="float-right">20%</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
@@ -1164,7 +1232,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white content-zoom2" >
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Arduino Dashboard Beta@NCCUMISLAB18</span>
@@ -1261,6 +1329,7 @@
 			 }, 20000);
 		});
 		
+		
 		$(document).ready(function(){
 			$("#dht_chart_block").load("dht11_tmp_realtime_chart.php");
 			 setInterval(function(){
@@ -1280,7 +1349,6 @@
 		function hideFunction(id){
 		  var list=["collapseDHT","collapse2","collapse3","collapse4"];
 		  list.splice(list.indexOf(id),1);
-		  console.log(list);
 		  var a = document.getElementById(id);
 		  
 		  var x = document.getElementById(list[0]);
@@ -1316,7 +1384,18 @@
 				if(parseInt(cookieValue) >= parseInt(tmp_tsh_value)){
 					document.getElementById("dht11_card").classList.remove('card');
 					document.getElementById("dht11_card").classList.add('card-warning');
+					
+					if(getSavedValue("line_toggle")=="true"){
+						jQuery.ajax({
+							type: "POST",
+							url: 'linebot.php',
+							dataType: 'json',
+							data: {msg: 'Temperature high '+cookieValue},
+
+						});
+					}
 					alert("Temperature high");
+					
 				}else{
 					if(document.getElementById("dht11_card").classList.contains('card-warning') ){
 						document.getElementById("dht11_card").classList.remove('card-warning');
@@ -1340,12 +1419,15 @@
 		
         //Save the value function - save it to localStorage as (ID, VALUE)
         function saveValue(x, y){
+			document.getElementById("tsh_set_btn").innerText="saved";
             var id1 = x;  // get the sender's id to save it . 
             var val1 = document.getElementById(x).value; // get the value. 
 			var id2 = y;
 			var val2 = document.getElementById(y).value;
             localStorage.setItem(id1, val1);// Every time user writing something, the localStorage's value will override . 
 			localStorage.setItem(id2, val2);
+			
+			
 		}
 
         //get the saved value function - return the value of "v" from localStorage. 
@@ -1357,14 +1439,139 @@
         }
 		
 		
+		var options="";
+		for(var hour = 0 ; hour <=23; hour++){
+			if( 0 <= hour && hour <= 9){
+				options += "<option>0"+ hour.toString() +"</option>";
+			}else{
+				options += "<option>"+ hour.toString() +"</option>";
+			}
+		  
+		}
+		document.getElementById("hour").innerHTML = options;		
+		document.getElementById("hour2").innerHTML = options;
 		
 		
+		var options="";
+		for(var min = 0 ; min <=59; min++){
+			if( 0<= min && min <= 9){
+				options += "<option>0"+ min.toString() +"</option>";
+			}else{
+				options += "<option>"+ min.toString() +"</option>";
+			}
+		  
+		}
+		document.getElementById("min").innerHTML = options;		
+		document.getElementById("min2").innerHTML = options;			
+				
+		var options="";
+		for(var sec = 0 ; sec <=59; sec++){
+			if( 0 <= sec && sec <= 9){
+				options += "<option>0"+ sec.toString() +"</option>";
+			}else{
+				options += "<option>"+ sec.toString() +"</option>";
+			}
+		  
+		}
+		document.getElementById("sec").innerHTML = options;		
+		document.getElementById("sec2").innerHTML = options;
+		
+		
+		function sortDht11Table(n) {
+			var msg1 ="";
+			if(getSavedValue("dht11_sort_toggle") == "ASC"){
+				localStorage.setItem("dht11_sort_toggle", "DESC");
+				
+			}else{
+				localStorage.setItem("dht11_sort_toggle", "ASC");
+			}
+			var order=getSavedValue("dht11_sort_toggle");
+			if(n == 0){
+				msg1="Temperature";
+				$("#tmp_sort").removeClass();
+				document.getElementById("tmp_sort").classList.add('fas');
+				if( order == "ASC" ){
+					document.getElementById("tmp_sort").classList.add('fa-sort-up');
+				}else{
+					document.getElementById("tmp_sort").classList.add('fa-sort-down');
+				}
+				
+				$("#date_sort").removeClass();
+				document.getElementById("date_sort").classList.add('fas');
+				document.getElementById("date_sort").classList.add('fa-sort');
+				
+				$("#hmd_sort").removeClass();
+				document.getElementById("hmd_sort").classList.add('fas');
+				document.getElementById("hmd_sort").classList.add('fa-sort');
+			}else if(n == 1){
+				msg1="humidity";
+				$("#hmd_sort").removeClass();
+				document.getElementById("hmd_sort").classList.add('fas');
+				if( order == "ASC" ){
+					document.getElementById("hmd_sort").classList.add('fa-sort-up');
+				}else{
+					document.getElementById("hmd_sort").classList.add('fa-sort-down');
+				}
+				
+				$("#tmp_sort").removeClass();
+				document.getElementById("tmp_sort").classList.add('fas');
+				document.getElementById("tmp_sort").classList.add('fa-sort');
+				
+				$("#date_sort").removeClass();
+				document.getElementById("date_sort").classList.add('fas');
+				document.getElementById("date_sort").classList.add('fa-sort');
+			}
+			else if(n == 2){
+				msg1="date";
+				$("#date_sort").removeClass();
+				document.getElementById("date_sort").classList.add('fas');
+				if( order == "ASC" ){
+					document.getElementById("date_sort").classList.add('fa-sort-up');
+				}else{
+					document.getElementById("date_sort").classList.add('fa-sort-down');
+				}
+				
+				$("#hmd_sort").removeClass();
+				document.getElementById("hmd_sort").classList.add('fas');
+				document.getElementById("hmd_sort").classList.add('fa-sort');
+				
+				$("#tmp_sort").removeClass();
+				document.getElementById("tmp_sort").classList.add('fas');
+				document.getElementById("tmp_sort").classList.add('fa-sort');
+			}
+			$.ajax({
+				type: "POST",
+				url: 'realtime_past_data_sort.php',
+				dataType: 'text',
+				data: {	
+					msg: msg1,
+					order: order
+				},
+				success: function (response) {
+				  $("#dht11_data_block").html(response);
+				  
+				}
+			});
+					
+		  //$("#dht11_data_block").load("realtime_past_data_sort.php");
+		}
 	
-		$('.divexpand').click(function(){
-			$(this).find('.divcollapse').slideToggle('slow');
-		});
+		function toggle(){
+			if($('#line_toggle').is(':checked') == true){
+				localStorage.setItem("line_toggle", "true");
+				console.log("on");
+			}else{
+				localStorage.setItem("line_toggle", "false");
+				console.log("off");
+			}
+			
+		}	
 		
-	
+		
+		
+		
+		
+		
 	</script>
 		
 	   

@@ -2,8 +2,11 @@
 	
 	//匯入連接MYSQL的檔案，使用剛剛建立的$mysqli物件
 	require_once('db_connect.php');
-	$res = $mysqli->query("select * from dht11");	
 	
+	$name=$_POST['msg'];
+	$order=$_POST['order'];
+	
+	$res = $mysqli->query("select * from dht11 ORDER BY $name $order");
 	while($rs = mysqli_fetch_row($res)) { 
 		
 ?>
