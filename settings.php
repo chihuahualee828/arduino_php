@@ -1,6 +1,49 @@
 <?php
-	header('Access-Control-Allow-Origin: *');
 	
+	if (isset($_POST['error'])) {
+	  echo "error:" .$_POST['error'];
+	  echo "<br>";
+	  echo "error_description:" .$_POST['error_description'];
+	  echo "<br>";
+	  exit;
+	};
+	$access_token="";
+	$Push_Content['grant_type'] = "authorization_code";
+	if(isset($_POST['code'])){
+		$Push_Content['code'] = $_POST['code'];
+	}
+	$Push_Content['redirect_uri'] = "http://192.168.10.100/arduino_web/settings.php";
+	$Push_Content['client_id'] = "sLpgsAhqt1P3boPHXxKUhe";
+	$Push_Content['client_secret'] = "SVzAuYcloeitr7S40p5CxxCimm6o3zV4vTYbvLJsQtx";
+	 // Auth Line Official Connect Step-1
+	//print_r($Push_Content);
+	//echo "<hr>";
+	//echo json_encode($Push_Content);
+	//echo "<hr>";
+	$ch = curl_init("https://notify-bot.line.me/oauth/token");
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($Push_Content));
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	   'Content-Type: application/x-www-form-urlencoded'
+	));
+	$response_json_str = curl_exec($ch);
+	curl_close($ch);
+	//echo $response_json_str.'<hr>';
+	$response = json_decode($response_json_str, true);
+	if (!isset($response['status']) || $response['status'] != 200 || !isset($response['access_token'])) {
+		//echo 'Request failed';
+	} else if (preg_match('/[^a-zA-Z0-9]/u', $response['access_token'])) {
+		//echo 'Got wired access_token: '.$response['access_token']."<br>";
+		//echo 'http_response_header'.$http_response_header."<br>";
+		//echo 'response_json'.$response_json_str."<br>";
+	} else {
+		$access_token=$response['access_token'];
+		//echo 'access_token: '.$access_token;
+	}
 ?>
 
 <!DOCTYPE html>
@@ -308,7 +351,7 @@
                                     <div class="chart-area">
 										Line Link
 										<button class="bg-light border-primary rounded" style="float:right; margin-right: 5px;" 
-										onclick="httpGet()" id="line_link">
+										onclick="oAuth2()" id="line_link">
 											<div class="text-xs font-weight-bold text-primary" style=" font-size:15px;">
 											Link
 											</div>
@@ -326,7 +369,7 @@
                                     <div class="chart-area">
 										Line Notify
 										<label class="switch" style="float:right;" >
-										  <input type="checkbox" id="line_toggle" onclick="toggle()">
+										  <input type="checkbox" id="line_toggle" onclick="toggle()" >
 										  <span class="slider round" ></span>
 										</label>
 										<div class="setting-divider"></div>
@@ -412,6 +455,21 @@
 	<script src="js/swipe.js"></script>
 	<script>
 		
+		if('<?php echo $access_token; ?>'!=""){
+			localStorage.setItem("access_token", '<?php echo $access_token; ?>');
+		}
+		
+		console.log(getSavedValue("access_token"));
+		
+		if(getSavedValue("access_token") == ""){
+			document.getElementById("line_link").innerText="Link";
+		}else{
+			document.getElementById("line_link").innerText="Linked";
+		}
+		
+		
+		
+		
 		
 		function toggle(){
 			if($('#line_toggle').is(':checked') == true){
@@ -424,15 +482,20 @@
 			
 		}	
 		
-		if(getToggleSavedValue("line_toggle")=="false"){
+		if(getSavedValue("line_toggle")=="false"){
 			document.getElementById("line_toggle").checked = false;
 		}else{
 			document.getElementById("line_toggle").checked = true;
 		}
 		
+		if(document.getElementById("line_link").innerText=="Link"){
+			document.getElementById("line_toggle").checked = false;
+			document.getElementById("line_toggle").disabled = true;
+			localStorage.setItem("line_toggle", "false");
+		}
 		
 		
-		function getToggleSavedValue  (v){
+		function getSavedValue  (v){
             if (!localStorage.getItem(v)) {
                 return "";// You can change this to your defualt value. 
             }
@@ -442,10 +505,33 @@
 		
 		/*
 		function redirect_line(){
-			document.location.href="https://notify-bot.line.me/oauth/authorize";
+			document.location.href="https://notify-bot.line.me/my/";
 			
-		}*/
-		
+		}
+		*/
+		function oAuth2() {
+			if(document.getElementById("line_link").innerText == "Link"){
+				var URL = 'https://notify-bot.line.me/oauth/authorize?';
+				URL += 'response_type=code';
+				URL += '&client_id=sLpgsAhqt1P3boPHXxKUhe';
+				URL += '&redirect_uri=http://192.168.10.100/arduino_web/settings.php';
+				URL += '&scope=notify';
+				URL += '&state=NO_STATE';
+				URL += '&response_mode=form_post';
+				window.location.href = URL;
+			}else{
+				if(confirm("unlink your Line?")==true){
+					document.getElementById("line_link").innerText="Link";
+					localStorage.setItem("access_token", "");
+				}else{
+					
+				}
+				
+			}
+            
+			
+        }
+		/*
 		function httpGet()
 		{
 			var xmlHttp = new XMLHttpRequest();
@@ -453,7 +539,7 @@
 			xmlHttp.send( null );
 			return xmlHttp.responseText;
 		}
-		
+		*/
 	
 	</script>
 		

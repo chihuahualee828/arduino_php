@@ -3,8 +3,10 @@
 	
 	$headers = array(
 		'Content-Type: multipart/form-data',
-		'Authorization: Bearer UqCCi96kgOgIF2O7Wb3FBeGYGy8MAfheAcDqqTdfz53'
+		'Authorization: Bearer '
 	);
+	$token=$_POST['access_token'];
+	$headers[1]='Authorization: Bearer '.$token;
 	
 	$value=$_POST['msg'];
 	$message = array(

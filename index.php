@@ -1390,8 +1390,10 @@
 							type: "POST",
 							url: 'linebot.php',
 							dataType: 'json',
-							data: {msg: 'Temperature high '+cookieValue},
-
+							data: {
+								access_token: getSavedValue("access_token"),
+								msg: 'Temperature high '+cookieValue
+							},
 						});
 					}
 					alert("Temperature high");
