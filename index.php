@@ -113,6 +113,9 @@
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+				<a class="nav-link" href="control.php">
+                    <i class="fas fa-fw fa-fan"></i>
+                    <span>Control</span></a>
             </li>
 
             <!-- Divider -->
@@ -396,6 +399,36 @@
 													</table>
 												
 												</div>
+												
+												<!-- fan slider -->
+												<div style="padding: 25px 0px 0px 0px;">
+													<form oninput="level.innerText = flevel.valueAsNumber" onchange="saveSliderValue()">
+													<table>
+														<tr>
+														
+															<td ><label for="flying">風扇</label></td>
+															
+															<td style="padding: 0px 10px 3px 10px;">
+																<input name="flevel" id="flying" type="range" min="0" max="100" value="0"> 
+															</td>
+															<td style="padding: 0px 10px 7px 5px;">
+																<output for="flying" name="level" id="flying_value">0</output>/100
+															</td>
+															
+															<td style="padding: 0px 0px 0px 10px;">
+																<div id="fan_switch">
+																	<label class="switch" style="float:right;">
+																	  <input type="checkbox" id="fan_switch_toggle" onclick="fan_switch_function()">
+																	  <span class="slider round" ></span>
+																	</label>
+																</div>
+															</td>
+														</tr>
+													</table>
+													</form>	
+												</div>
+												<!-- fan slider -->
+												
 											</div>
 											
 											<div class="col-auto">
@@ -441,6 +474,37 @@
 													</tr>
 												</table>
 											</div>
+											
+											<!-- fan slider 2-->
+											<div class="text-success" style="padding: 25px 0px 0px 0px;">
+												<form oninput="level.innerText = flevel.valueAsNumber" onchange="saveSliderValue()">
+												<table>
+													<tr>
+													
+														<td ><label for="flying2">風扇2</label></td>
+														
+														<td style="padding: 0px 10px 3px 10px;">
+															<input name="flevel" id="flying2" type="range" min="0" max="100" value="0"> 
+														</td>
+														<td style="padding: 0px 10px 7px 5px;">
+															<output for="flying2" name="level" id="flying_value2">0</output>/100
+														</td>
+														
+														<td style="padding: 0px 0px 0px 10px;">
+															<div id="fan_switch2">
+																<label class="switch" style="float:right;">
+																  <input type="checkbox" id="fan_switch_toggle2" onclick="fan_switch_function()">
+																  <span class="slider round" ></span>
+																</label>
+															</div>
+														</td>
+													</tr>
+												</table>
+												</form>	
+											</div>
+											<!-- fan slider -->
+											
+											
                                         </div>
                                         <div class="col-auto">
 										<!--
@@ -489,6 +553,34 @@
 													</tr>
 												</table>
 											</div>
+											<!-- fan slider 3-->
+											<div class="text-info" style="padding: 25px 0px 0px 0px;">
+												<form oninput="level.innerText = flevel.valueAsNumber" onchange="saveSliderValue()">
+												<table>
+													<tr>
+													
+														<td ><label for="flying3">風扇3</label></td>
+														
+														<td style="padding: 0px 10px 3px 10px;">
+															<input name="flevel" id="flying3" type="range" min="0" max="100" value="0"> 
+														</td>
+														<td style="padding: 0px 10px 7px 5px;">
+															<output for="flying3" name="level" id="flying_value3">0</output>/100
+														</td>
+														
+														<td style="padding: 0px 0px 0px 10px;">
+															<div id="fan_switch3">
+																<label class="switch" style="float:right;">
+																  <input type="checkbox" id="fan_switch_toggle3" onclick="fan_switch_function()">
+																  <span class="slider round" ></span>
+																</label>
+															</div>
+														</td>
+													</tr>
+												</table>
+												</form>	
+											</div>
+											<!-- fan slider -->
                                             <div class="row no-gutters align-items-center">
 											<!--
                                                 <div class="col-auto">
@@ -547,6 +639,34 @@
 													</tr>
 												</table>
 											</div>
+											<!-- fan slider 4-->
+											<div class="text-warning" style="padding: 25px 0px 0px 0px;">
+												<form oninput="level.innerText = flevel.valueAsNumber" onchange="saveSliderValue()">
+												<table>
+													<tr>
+													
+														<td ><label for="flying4">風扇4</label></td>
+														
+														<td style="padding: 0px 10px 3px 10px;">
+															<input name="flevel" id="flying4" type="range" min="0" max="100" value="0"> 
+														</td>
+														<td style="padding: 0px 10px 7px 5px;">
+															<output for="flying4" name="level" id="flying_value4">0</output>/100
+														</td>
+														
+														<td style="padding: 0px 0px 0px 10px;">
+															<div id="fan_switch4">
+																<label class="switch" style="float:right;">
+																  <input type="checkbox" id="fan_switch_toggle4" onclick="fan_switch_function()">
+																  <span class="slider round" ></span>
+																</label>
+															</div>
+														</td>
+													</tr>
+												</table>
+												</form>	
+											</div>
+											<!-- fan slider -->
                                         </div>
                                         <div class="col-auto">
                                             <i class=""></i>
@@ -1292,6 +1412,60 @@
 	
 	<script src="js/swipe.js"></script>
 	<script>
+	
+		$('[id^="fan_switch"]').click(function(e){
+			e.stopPropagation()
+		});
+		$('[id^="flying"]').click(function(e){
+			e.stopPropagation()
+		});
+		
+		
+		
+		
+		
+		function fan_switch_function() {
+		  var checkBox = document.getElementById("fan_switch_toggle");
+		  var range=document.getElementById("flying");
+		  if (checkBox.checked == false){
+			var fan_slider_value=range.value;
+			
+			range.value = 0;
+			range.disabled = true;
+			localStorage.setItem("fan_switch", "false");
+		  }else{
+			range.disabled = false;
+			localStorage.setItem("fan_switch", "true");
+			
+		  } 
+		}
+		
+		function saveSliderValue() {
+			var range=document.getElementById("flying");
+			
+			var fan_slider_value=range.value;
+			console.log(fan_slider_value);
+			localStorage.setItem("fan_slider_value", fan_slider_value);  
+		}
+		
+		if(getSavedValue("fan_switch")=="false"){
+			document.getElementById("fan_switch_toggle").checked = false;
+			document.getElementById("flying").disabled = true;
+		}else{
+			document.getElementById("fan_switch_toggle").checked = true;
+			document.getElementById("flying").disabled = false;
+		}
+		
+		if(getSavedValue("fan_slider_value")!=null){
+			var range=document.getElementById("flying");
+			range.value = getSavedValue("fan_slider_value");
+			document.getElementById("flying_value").innerText = getSavedValue("fan_slider_value");
+		}
+		
+		
+		
+		
+		
 		$(document).ready(function(){
 			$("#dht11_block").load("realtime.php");
 			 setInterval(function(){
