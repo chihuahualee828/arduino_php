@@ -266,7 +266,7 @@
                                     Profile
                                 </a>
 								-->
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="settings.php">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
@@ -398,6 +398,47 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	<script>
+		
+		function login(){
+		var userName=getWithExpiry("login_username");
+		var password=getWithExpiry("login_password");
+		$.ajax({
+			type: "POST",
+			url: 'db_login.php',
+			dataType: 'text',
+			data: {	
+				userName: userName,
+				password: password
+			},
+			success: function (response) {
+				if(response=="Login Success!"){
+					console.log("success!");
+				}else{
+					console.log("Failed!");
+					location.href="login.html";
+				}
+			}
+			});
+			
+		}
+		login();
+		function getWithExpiry(key) {
+			const itemStr = localStorage.getItem(key)
+			// if the item doesn't exist, return null
+			if (!itemStr) {
+				return null
+			}
+			const item = JSON.parse(itemStr)
+			const now = new Date()
+			// compare the expiry time of the item with the current time
+			if (now.getTime() > item.expiry) {
+				// If the item is expired, delete the item from storage
+				// and return null
+				localStorage.removeItem(key)
+				return null
+			}
+			return item.value
+		}
 		
 		$(document).on('swipeleft', '.ui-page', function(event){    
 			if(event.handled !== true) // This will prevent event triggering more then once

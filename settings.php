@@ -458,6 +458,48 @@
 	<script src="js/swipe.js"></script>
 	<script>
 		
+		function login(){
+		var userName=getWithExpiry("login_username");
+		var password=getWithExpiry("login_password");
+		$.ajax({
+			type: "POST",
+			url: 'db_login.php',
+			dataType: 'text',
+			data: {	
+				userName: userName,
+				password: password
+			},
+			success: function (response) {
+				if(response=="Login Success!"){
+					console.log("success!");
+				}else{
+					console.log("Failed!");
+					location.href="login.html";
+				}
+			}
+			});
+			
+		}
+		login();
+		function getWithExpiry(key) {
+			const itemStr = localStorage.getItem(key)
+			// if the item doesn't exist, return null
+			if (!itemStr) {
+				return null
+			}
+			const item = JSON.parse(itemStr)
+			const now = new Date()
+			// compare the expiry time of the item with the current time
+			if (now.getTime() > item.expiry) {
+				// If the item is expired, delete the item from storage
+				// and return null
+				localStorage.removeItem(key)
+				return null
+			}
+			return item.value
+		}
+		
+		
 		if('<?php echo $access_token; ?>'!=""){
 			localStorage.setItem("access_token", '<?php echo $access_token; ?>');
 		}

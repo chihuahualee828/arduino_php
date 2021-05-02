@@ -1,11 +1,16 @@
 <?php
 	//index.php是首頁
 	$page = $_SERVER['PHP_SELF'];
+	
+	
 	header("URL=$page");
+	
 	//匯入連接MYSQL的檔案，使用剛剛建立的$mysqli物件
 	require_once('db_connect.php');
 	
 	//刪除功能
+	
+	
 	
 	
 	$res = $mysqli->query("select * from dht11");	
@@ -1386,7 +1391,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" onclick="clear_login_pass()">Logout</a>
                 </div>
             </div>
         </div>
@@ -1420,6 +1425,42 @@
 			e.stopPropagation()
 		});
 		
+		
+		
+	
+		
+		
+		
+		function login(){
+		var userName=getWithExpiry("login_username");
+		var password=getWithExpiry("login_password");
+		$.ajax({
+			type: "POST",
+			url: 'db_login.php',
+			dataType: 'text',
+			data: {	
+				userName: userName,
+				password: password
+			},
+			success: function (response) {
+				if(response=="Login Success!"){
+					console.log("success!");
+				}else{
+					console.log("Failed!");
+					location.href="login.html";
+				}
+			}
+			});
+			
+		}
+		login();
+		
+		
+		function clear_login_pass() {
+			localStorage.removeItem("login_username");
+			localStorage.removeItem("login_password");
+			location.href="login.html"
+		}
 		
 		
 		
@@ -1614,6 +1655,24 @@
             return localStorage.getItem(v);
         }
 		
+		
+		function getWithExpiry(key) {
+			const itemStr = localStorage.getItem(key)
+			// if the item doesn't exist, return null
+			if (!itemStr) {
+				return null
+			}
+			const item = JSON.parse(itemStr)
+			const now = new Date()
+			// compare the expiry time of the item with the current time
+			if (now.getTime() > item.expiry) {
+				// If the item is expired, delete the item from storage
+				// and return null
+				localStorage.removeItem(key)
+				return null
+			}
+			return item.value
+		}
 		
 		var options="";
 		for(var hour = 0 ; hour <=23; hour++){
