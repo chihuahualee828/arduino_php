@@ -22,6 +22,9 @@
 	}*/
 	
 	
+	
+	
+	
 	if(isset($myPost[8])){
 		if($myPost[0] != "" and $myPost[4] != "" ){
 			$from = $myPost[0]." ".$myPost[1].":".$myPost[2].":".$myPost[3];
@@ -472,14 +475,15 @@
 								<table >
 									<tr >
 										<td >
-											#01風車運轉狀態
+											#01馬達
 										</td>
 										
 										<td >
-											<div id="fan_switch" >
+											<div id="motor_switch" >
 												<label class="switch" style="float:right;">
-												  <input type="checkbox" id="fan_switch_toggle" onclick="fan_switch_function()">
+												  <input type="checkbox" id="motor_switch_toggle" onclick="motor_switch_function()">
 												  <span class="slider round" ></span>
+												  
 												</label>
 											</div>
 										</td>
@@ -1793,6 +1797,47 @@
 		}
 		
 		/***
+		function motor_switch_function(){
+		  var checkBox = document.getElementById("motor_switch_toggle");
+		  if (checkBox.checked == false){
+			localStorage.setItem("motor_switch", "false");
+			
+		  }else{
+			localStorage.setItem("motor_switch", "true");
+			
+			console.log($port);
+		  } 
+		}
+		***/
+		
+		function motor_switch_function(){
+		  var checkBox = document.getElementById("motor_switch_toggle");
+		  if (checkBox.checked == false){
+			localStorage.setItem("motor_switch", "false");
+			jQuery.ajax({
+				type: "POST",
+				url: 'motor_control.php',
+				dataType: 'json',
+				data: {
+					motor_turn: 'off'
+				},
+			});
+		  }else{
+			localStorage.setItem("motor_switch", "true");
+			jQuery.ajax({
+				type: "POST",
+				url: 'motor_control.php',
+				dataType: 'json',
+				data: {
+					motor_turn: 'on'
+				},
+			});
+		  } 
+		  
+		}
+		
+		
+		/***
 		function fan_switch_function() {
 		  var checkBox = document.getElementById("fan_switch_toggle");
 		  var range=document.getElementById("flying");
@@ -1816,15 +1861,14 @@
 			console.log(fan_slider_value);
 			localStorage.setItem("fan_slider_value", fan_slider_value);  
 		}
-		
-		if(getSavedValue("fan_switch")=="false"){
-			document.getElementById("fan_switch_toggle").checked = false;
-			document.getElementById("flying").disabled = true;
+		***/
+		if(getSavedValue("motor_switch")=="false"){
+			document.getElementById("motor_switch_toggle").checked = false;
+			
 		}else{
-			document.getElementById("fan_switch_toggle").checked = true;
-			document.getElementById("flying").disabled = false;
+			document.getElementById("motor_switch_toggle").checked = true;
 		}
-		
+		/***
 		if(getSavedValue("fan_slider_value")!=null){
 			var range=document.getElementById("flying");
 			range.value = getSavedValue("fan_slider_value");
