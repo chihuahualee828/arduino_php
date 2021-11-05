@@ -12,7 +12,7 @@
 	if(isset($_POST['code'])){
 		$Push_Content['code'] = $_POST['code'];
 	}
-	$Push_Content['redirect_uri'] = "http://192.168.10.100/arduino_web/settings.php";
+	$Push_Content['redirect_uri'] = "http://192.168.50.50/arduino_web/settings.php";
 	$Push_Content['client_id'] = "sLpgsAhqt1P3boPHXxKUhe";
 	$Push_Content['client_secret'] = "SVzAuYcloeitr7S40p5CxxCimm6o3zV4vTYbvLJsQtx";
 	 // Auth Line Official Connect Step-1
@@ -66,7 +66,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css?rndstr=<%= getRandomStr()%>" rel="stylesheet">
+    <link href="css/sb-admin-2.css?rndstr=<%= getRandomStr()  %>" rel="stylesheet">
 	
 	
 
@@ -75,17 +75,18 @@
 <body id="page-top">
 
     <!-- Page Wrapper -->
+	
     <div id="wrapper" >
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled " id="accordionSidebar" >
+        <ul class="navbar-nav bg-gradient-arduino sidebar sidebar-dark accordion toggled " id="accordionSidebar" >
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index_main.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i ></i>
                 </div>
-				<div >Arduino admin beta</div>
+				<div >Aquarium Monitor</div>
                 <!--<div class="sidebar-brand-text mx-3">Arduino admin beta</div>-->
             </a>
 
@@ -94,10 +95,10 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="index_main.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
-				<a class="nav-link" href="control.php">
+				<a class="nav-link" href="control_page.php">
                     <i class="fas fa-fw fa-fan"></i>
                     <span>Control</span></a>
             </li>
@@ -118,7 +119,7 @@
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
+                        <i class="fa fa-bars" style="color:#036467"></i>
                     </button>
 
                     <!-- Topbar Search -->
@@ -140,28 +141,7 @@
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                       
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
@@ -169,7 +149,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">1+</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -332,7 +312,9 @@
 
                 </nav>
                 <!-- End of Topbar -->
-				<div class="content-zoom " >
+				
+				
+				<div class="" >
                     <div class="col-xl-13 col-lg-7">
 						
                             <div class="card shadow mb-4">
@@ -340,7 +322,7 @@
 								
 								<a class="nav-link">
 								<span>
-								<div class="text-xs font-weight-bold mb-1" 
+								<div class="text-xs font-weight-bold mb-1 text-arduino" 
 												style=" font-size:30px;" >Settings</div>
 								</span>
 								</a>
@@ -351,11 +333,11 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-area">
+                                    <div class="chart-area content-zoom2" style="padding: 0px 0px 0px 20px;">
 										Line Link
-										<button class="bg-light border-primary rounded" style="float:right; margin-right: 5px;" 
+										<button class="bg-light border-arduino rounded" style="float:right; margin-right: 5px;" 
 										onclick="oAuth2()" id="line_link">
-											<div class="text-xs font-weight-bold text-primary" style=" font-size:15px;">
+											<div class="text-xs font-weight-bold text-arduino" style=" font-size:15px;">
 											Link
 											</div>
 										</button>
@@ -368,20 +350,31 @@
                                     <h6 class="m-0 font-weight-bold text-primary"></h6>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
+                                <div class="card-body" >
+                                    <div class="chart-area content-zoom2" style="padding: 0px 0px 0px 20px;">
 										Line Notify
 										<label class="switch" style="float:right;" >
 										  <input type="checkbox" id="line_toggle" onclick="toggle()" >
 										  <span class="slider round" ></span>
 										</label>
 										<div class="setting-divider"></div>
-										None
+										Connect to Database 
+										<label class="switch" style="float:right;" >
+										  <input type="checkbox" id="database_toggle" onclick="" >
+										  <span class="slider round" ></span>
+										</label>
 										<div class="setting-divider"></div>
-										None
-										<div class="setting-divider"></div>
-										None
-										<div class="setting-divider"></div>
+										<div style="padding: 0px 0px 30px 0px;">
+											<div style="float:left">
+												Notification
+											</div>
+											<label class="switch" style=" float:right;" >
+											  <input type="checkbox" id="notification_toggle" onclick="" >
+											  <span class="slider round" ></span>
+											</label>
+										</div>
+										<div class="setting-divider" style="padding: 0px 0px 0px 0px;">
+										</div>
                                     </div>
                                 </div>
                             </div>
@@ -396,22 +389,24 @@
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white content-zoom2" >
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Arduino Dashboard Beta@NCCUMISLAB18</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            
 
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-
+	
+	<!-- Footer -->
+	<footer class=" bg-white">
+		<div class="container my-auto">
+			<div class=" text-center my-auto" style=" font-size:10px;">
+				<span>Aquarium Dashboard@NCCUMISLAB18</span>
+			</div>
+		</div>
+	</footer>
+	<!-- End of Footer -->
+	
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -470,7 +465,7 @@
 				password: password
 			},
 			success: function (response) {
-				if(response=="Login Success!"){
+				if(response.includes("Login Success!")){
 					console.log("success!");
 				}else{
 					console.log("Failed!");
@@ -559,7 +554,7 @@
 				var URL = 'https://notify-bot.line.me/oauth/authorize?';
 				URL += 'response_type=code';
 				URL += '&client_id=sLpgsAhqt1P3boPHXxKUhe';
-				URL += '&redirect_uri=http://192.168.10.100/arduino_web/settings.php';
+				URL += '&redirect_uri=http://192.168.50.50/arduino_web/settings.php';
 				URL += '&scope=notify';
 				URL += '&state=NO_STATE';
 				URL += '&response_mode=form_post';

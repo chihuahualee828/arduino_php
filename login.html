@@ -128,11 +128,12 @@
 				password: password
 			},
 			success: function (response) {
-				if(response=="Login Success!"){
+				console.log(response);
+				if(response.includes("Login Success!")){
 					console.log("Successful!");
 					setLogin("login_username",userName,100000000);
 					setLogin("login_password",password,100000000);
-					location.href="index.php";
+					location.href="index_main.php";
 				}else{
 					console.log("Failed!");
 				}
@@ -140,7 +141,11 @@
 			});
 			
 		}
-			
+		
+		$(document).ready(function(){
+			$("#dht11_block").load("db_login.php");
+		});
+		
 		function setLogin(key, value, ttl) {
 			const now = new Date()
 
