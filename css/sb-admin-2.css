@@ -32,6 +32,7 @@
   --danger: #e74a3b;
   --light: #f8f9fc;
   --dark: #5a5c69;
+  --arduino: #036467;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -59,6 +60,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 body {
+  
   margin: 0;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
@@ -67,6 +69,9 @@ body {
   color: #858796;
   text-align: left;
   background-color: #fff;
+  /* scroll 
+  overflow: hidden; 
+  */
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -482,6 +487,7 @@ mark,
   height: auto;
 }
 
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
@@ -583,11 +589,64 @@ pre code {
   }
 }
 
-.row {
-  display: flex;
+/**
+.slider-container{
+	height: 100vh;
+	display: inline-flex;
+	overflow: hidden;
+	transform: translateX(0);
+	transition: transform 0.3s ease-out;
+	cursor: grab;
+	
+}
+
+.slide {
+	max-height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}
+**/
+
+
+
+
+.row-master {
+  display: flex-shrink;
   flex-wrap: wrap;
+  margin-right: -1.45rem;
+  margin-left: -0.7rem;
+}
+.row {
+  display: flex-shrink;
+  /** 主要排版 card-body stack or not**/
+  
+  /**每塊是否有重疊**/
+  margin-right: 0.35rem;
+  margin-left: -0.85rem;
+  
+}
+
+.row-chart {
+  display: flex;
   margin-right: -0.75rem;
   margin-left: -0.75rem;
+  
+}
+
+.row-bottom {
+  display: flex;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+  
+}
+
+.row-shrink {
+	
+	
+  margin-right: 0.25rem;
+  margin-left: 3.25rem;
   
 }
 
@@ -1401,6 +1460,11 @@ pre code {
     flex: 0 0 100%;
     max-width: 100%;
   }
+  .col-xl-13 {
+    flex: 0 0 100%;
+    max-width: 100%;
+	max-height: 100%;
+  }
   .order-xl-first {
     order: -1;
   }
@@ -1482,6 +1546,122 @@ pre code {
   .offset-xl-11 {
     margin-left: 91.66667%;
   }
+}
+
+#siteSelect{
+ height:30px;   
+}
+
+#systemsTab{
+ padding:30px; 
+}
+
+#contentTab{
+ background-color: #f1f1f1;
+ border: 0px;
+ border-left: 2px solid #000000;
+ border-top: 2px solid #000000;
+ height: 40px;
+}
+
+#contentTab button {
+  padding: 5px 30px;
+}
+
+
+#contentTab button:hover {
+  background-color: #ddd;
+}
+
+#mainContent {
+  border: 2px solid #000000;
+  background-color: white;
+}
+
+#realTimeTop {
+  padding:15px 10px 10px 10px;
+  background-color: white;
+
+}
+#realTimeTop td{
+  border-right: 1px solid #000000;
+  border-left: 1px solid #000000;
+  background-color: white;
+  text-align: center;
+  padding:0px 60px 0px 60px;
+  width:20%;
+}
+
+
+#realTime {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background-color: white;
+  padding:5px 10px 5px 10px;
+  
+}
+#realTime tr{
+  border-bottom: 1px solid #ccc;
+}
+
+#realTime td{
+  border-right: 1px dashed #ccc;
+  border-left: 1px dashed #ccc;
+  background-color: white;
+  text-align: center;
+  padding:0px 40px 0px 40px;
+  width:20%;
+}
+
+#fan_switch label{
+  text-align: center;
+}
+
+
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 0px;
+}
+
+.tab {
+  float: left;
+  border: 5px double #ccc;
+  background-color: white;
+  width: 100%;
+  height: 60px;
+  
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 15px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  height: 100%;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #87CEEB;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #87CEEB;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  width: 100%;
 }
 
 .table {
@@ -1896,6 +2076,11 @@ pre code {
   background-color: #eaecf4;
   opacity: 1;
 }
+
+
+input[type="number"]{
+    width: 60px;
+} 
 
 input[type="date"].form-control,
 input[type="time"].form-control,
@@ -3177,6 +3362,123 @@ input[type="button"].btn-block {
   border-top: 1px solid #eaecf4;
 }
 
+.setting-divider {
+  height: 0;
+  margin: 1rem 0;
+  overflow: hidden;
+  border-top: 2px solid #eaecf4;
+}
+
+
+
+
+
+/* The toggle-switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 35px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 27px;
+  width: 27px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(35px);
+  -ms-transform: translateX(35px);
+  transform: translateX(35px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/* The toggle-switch - the box around the slider */
+
+
+
+
+
+
+
+
+
+/* sort icon arrow*/
+.tablesorter-header {
+    position: relative;          /* This is needed for the absolute positioning. */
+}
+
+.tablesorter-header::before,
+.tablesorter-header::after {
+    position: absolute;
+    right: 0.75em;
+    font-family: 'FontAwesome';  /* Use FontAwesome's font so that you can set the content */
+    opacity: 0.3;                /* Set opacity to gray out icons by default */
+}
+
+.tablesorter-header::before {
+    content: '\f0de';            /* Font Awesome's up arrow */
+    top: calc(50% - 0.75em);     /* Tricky to calculate the top offset */
+}
+
+.tablesorter-header::after {
+    content: '\f0dd';            /* Font Awesome's down arrow */
+    bottom: calc(50% - 0.75em);
+}
+
+.tablesorter-header.tablesorter-headerAsc::before,
+.tablesorter-header.tablesorter-headerDesc::after {
+    opacity: 1;                  /* When sorting, set full opacity on the direction */
+}
+/* sort icon arrow*/
+
+
+
+
+
+
 .dropdown-item {
   display: block;
   width: 100%;
@@ -4008,7 +4310,7 @@ input[type="button"].btn-block {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 0rem 0.25rem 0rem 0.4rem;
 }
 
 .nav-link:hover, .nav-link:focus {
@@ -4171,6 +4473,22 @@ input[type="button"].btn-block {
   content: "";
   background: no-repeat center center;
   background-size: 100% 100%;
+}
+
+
+
+@media screen and (max-width: 1500px) {
+    .content-zoom {
+		zoom: 50%;
+	}
+	.content-zoom2 {
+		zoom: 80%;
+	}
+	.topbar-shrink {
+		height: 2.375rem;
+	}
+	
+	
 }
 
 @media (max-width: 575.98px) {
@@ -4457,10 +4775,12 @@ input[type="button"].btn-block {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
+  /** 每塊顏色 card backgroud color **/
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid #e3e6f0;
-  border-radius: 0.35rem;
+  border-radius: 1.35rem;
+  
 }
 
 .card-warning {
@@ -4472,7 +4792,7 @@ input[type="button"].btn-block {
   background-color: #e74a3b;
   background-clip: border-box;
   border: 1px solid #e3e6f0;
-  border-radius: 0.35rem;
+  border-radius: 1.35rem;
 }
 
 .card > hr {
@@ -4505,7 +4825,7 @@ input[type="button"].btn-block {
 .card-body {
   flex: 1 1 auto;
   min-height: 1px;
-  padding: 1.25rem;
+  padding: 0.75rem;
 }
 
 .card-title {
@@ -6514,6 +6834,10 @@ button.bg-dark:focus {
   border-left: 0 !important;
 }
 
+.border-arduino {
+  border-color: #036467 !important;
+}
+
 .border-primary {
   border-color: #4e73df !important;
 }
@@ -6636,6 +6960,7 @@ button.bg-dark:focus {
   display: inline-flex !important;
 }
 
+/*show search icon and side menu toggle when shrink*/
 @media (min-width: 576px) {
   .d-sm-none {
     display: none !important;
@@ -6812,6 +7137,8 @@ button.bg-dark:focus {
   height: 100%;
   border: 0;
 }
+
+
 
 .embed-responsive-21by9::before {
   padding-top: 42.85714%;
@@ -9567,6 +9894,11 @@ button.bg-dark:focus {
   color: #fff !important;
 }
 
+
+.text-arduino{
+	color: #036467 !important;
+	
+}
 .text-primary {
   color: #4e73df !important;
 }
@@ -9770,6 +10102,7 @@ a:focus {
 
 #wrapper {
   display: flex;
+  position:relative;
 }
 
 #wrapper #content-wrapper {
@@ -9923,6 +10256,12 @@ a:focus {
   background-size: cover;
 }
 
+.bg-gradient-arduino {
+  background-color: #036467;
+  background-image: linear-gradient(180deg, #02878B 10%, #03797D 100%);
+  background-size: cover;
+}
+
 .bg-gray-100 {
   background-color: #f8f9fc !important;
 }
@@ -10016,8 +10355,12 @@ a:focus {
   justify-content: center;
 }
 
+.border-left-arduino {
+  border-left: 0.35rem solid #036467 !important;
+}
+
 .border-left-primary {
-  border-left: 0.25rem solid #4e73df !important;
+  border-left: 0.75rem solid #4e73df !important;
 }
 
 .border-bottom-primary {
@@ -10025,7 +10368,7 @@ a:focus {
 }
 
 .border-left-secondary {
-  border-left: 0.25rem solid #858796 !important;
+  border-left: 0.75rem solid #858796 !important;
 }
 
 .border-bottom-secondary {
@@ -10033,7 +10376,7 @@ a:focus {
 }
 
 .border-left-success {
-  border-left: 0.25rem solid #1cc88a !important;
+  border-left: 0.75rem solid #1cc88a !important;
 }
 
 .border-bottom-success {
@@ -10041,7 +10384,7 @@ a:focus {
 }
 
 .border-left-info {
-  border-left: 0.25rem solid #36b9cc !important;
+  border-left: 0.75rem solid #36b9cc !important;
 }
 
 .border-bottom-info {
@@ -10049,7 +10392,7 @@ a:focus {
 }
 
 .border-left-warning {
-  border-left: 0.25rem solid #f6c23e !important;
+  border-left: 0.75rem solid #f6c23e !important;
 }
 
 .border-bottom-warning {
@@ -10137,19 +10480,20 @@ a:focus {
   margin-top: -.25rem;
 }
 
+/* image profile size chihuahua */
 .sidebar .nav-item .nav-link .img-profile,
 .topbar .nav-item .nav-link .img-profile {
-  height: 3rem;
-  width: 3rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .topbar {
-  height: 5.375rem;
+  height: 4.375rem;
 }
 
 .topbar #sidebarToggleTop {
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 3rem;
+  width: 3rem;
 }
 
 .topbar #sidebarToggleTop:hover {
@@ -10159,6 +10503,8 @@ a:focus {
 .topbar #sidebarToggleTop:active {
   background-color: #dddfeb;
 }
+
+
 
 .topbar .navbar-search {
   width: 25rem;
@@ -10175,6 +10521,7 @@ a:focus {
   height: calc(4.375rem - 2rem);
   margin: auto 1rem;
 }
+
 
 .topbar .nav-item .nav-link {
   height: 4.375rem;
@@ -11291,18 +11638,21 @@ form.user .btn-user {
   animation: noise-anim-2 3s infinite linear alternate-reverse;
 }
 
+
+
+
 footer.sticky-footer {
   padding: 2rem 0;
   flex-shrink: 0;
   position: absolute; 
   bottom: 0; 
-  width: 100%; 
+  width: 100%;
   
 }
 
 footer.sticky-footer .copyright {
   line-height: 1;
-  font-size: 0.8rem;
+  font-size: 0.1rem;
 }
 
 body.sidebar-toggled footer.sticky-footer {
