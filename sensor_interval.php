@@ -27,6 +27,8 @@ if(isset($_POST['interval'])) {
 		
 	}else if($interval[0]=="temp_interval"){
 		openSerial("temp_interval ".$interval[1]);
+	}else if($interval[0]=="turb_interval"){
+		openSerial("turb_interval ".$interval[1]);
 	}
 }else{
 	echo "failed";

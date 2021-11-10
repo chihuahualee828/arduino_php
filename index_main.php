@@ -87,7 +87,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css?rndstr=<%=   getRandomStr()             %>" rel="stylesheet">
+    <link href="css/sb-admin-2.css?rndstr=<%=    getRandomStr()              %>" rel="stylesheet">
 	 
 	
 
@@ -356,11 +356,11 @@
 						
 						
                         <!-- Earnings (Monthly) Card Example -->
-						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseDHT"
-							aria-expanded="true" aria-controls="collapseDHT" onclick="hideFunction('collapseDHT')">
+						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse1"
+							aria-expanded="true" aria-controls="collapse1" onclick="hideFunction('collapse1')">
 							<span>
 							<div >
-								<div class="card border-left-arduino shadow h-100 py-2" id="dht11_card">
+								<div class="card border-left-arduino shadow h-100 py-2" id="temp_card">
 									<div class="card-body" >
 										<div class="row no-gutters align-items-center" >
 											<div >
@@ -373,7 +373,7 @@
 															
 														</tr>
 														
-														<tr id="dht11_block">
+														<tr id="temp_block">
 															<!--
 																load from realtime.php
 															-->
@@ -433,12 +433,12 @@
 						
 						<div class="row-shrink  content-zoom2" >
 								<div class="col-xl-8 col-lg-7">
-								<div id="collapseDHT" class="collapse card border-left-arduino shadow h-10 py-2 animated--grow-in" >
+								<div id="collapse1" class="collapse card border-left-arduino shadow h-10 py-2 animated--grow-in" >
 									<div class="card-body " >
 										<div class="row no-gutters align-items-center ">
 											<div class="col mr-2">
 												<div class="text-xs font-weight-bold text-arduino text-uppercase mb-1" 
-												style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
+												style=" font-size:30px; padding: 10px 10px 25px 3px;" >
 													Threshold : </div>
 												<div class="h5 mb-0 font-weight-bold text-gray-800" >
 													<div style="height:100px;">
@@ -523,7 +523,7 @@
 												</div>
 												<div class="h5 mb-0 font-weight-bold text-gray-800  content-zoom2" >
 													<div style="height:400px;overflow:auto;">
-													<table id="dht11_data_table">
+													<table id="temp_data_table">
 														<tr>
 															
 															<th style="padding: 10px 10px 5px 5px;" onclick="sortDht11Table(0)">tmp</th>
@@ -535,7 +535,7 @@
 															<td style="padding: 10px 100px 5px 700px;"></td>
 														</tr>
 														
-														<tbody id="dht11_data_block" > 
+														<tbody id="temp_data_block" > 
 														<tr >
 															<!--
 																load from realtime_past_data.php
@@ -911,7 +911,35 @@
 									<div class="card-body">
 										<div class="row no-gutters align-items-center">
 											<div class="col mr-2">
-											
+												<div class="text-xs font-weight-bold text-arduino text-uppercase mb-1" 
+												style=" font-size:30px; padding: 10px 10px 25px 3px;"" >
+													Threshold : </div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800" >
+													<div style="height:100px;">
+													<table>
+														<tr>
+															<td style="padding: 10px 10px 5px 5px;">turb</td>
+															<td style="padding: 10px 10px 5px 5px;">
+																<input type="text" name="tmp_tsh" placeholder="30" size="4" id="tmp_tsh" />
+															</td>
+															<td></td>
+															<!--
+															<td style="padding: 10px 10px 5px 60px;">humidity</td>
+															<td style="padding: 10px 10px 5px 5px;">
+																<input type="text" name="hmd_tsh" placeholder="40" size="4" id="hmd_tsh" />
+															</td>
+															<td></td>
+															-->
+															<td style="padding: 10px 10px 5px 30px;">
+																<button class="bg-light border-arduino rounded" onclick="saveValue('tmp_tsh')" id="tsh_set_btn">set</button>
+															</td>
+														</tr>
+														
+													</table>	
+													</div>
+												</div>
+												
+												<div class="dropdown-divider"></div>
 												<div class="text-xs font-weight-bold text-arduino text-uppercase mb-1" 
 													style=" font-size:30px; padding: 10px 10px 25px 3px;" >
 														Sensor : 
@@ -948,7 +976,7 @@
 															<td></td>
 															<td style="padding: 10px 10px 5px 120px;"></td>
 															<td></td>
-															<td style="padding: 10px 5px 5px 120px;">timestamp</td>
+															<td style="padding: 10px 5px 5px 120px;"></td>
 															<td style="padding: 10px 100px 5px 700px;"></td>
 														</tr>
 													</table>
@@ -974,7 +1002,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div >
                                             <div class="text-xs font-weight-bold text-arduino text-uppercase mb-1" style=" font-size:30px;">
-                                                ORP</div>
+                                                </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
 												<table>
 													<tr>
@@ -1064,7 +1092,15 @@
 						</div>
 						
 					</div>
-						
+					
+						<div class="row" style="padding: 30px 3px 10px 10px;">
+                             <div class="card-body" style="padding: 0px 0px 0px 0px; border-radius: 13.35px;">
+								<div class="row no-gutters align-items-center"  >
+									<video id="video" width="490" height="350" autoplay></video>
+									<script src="js/video.js"></script>
+								</div>
+							</div>
+						</div>
                     </div>	
 				</div>
                     
@@ -1318,6 +1354,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	<script src="js/swipe.js"></script>
+
 	<script>
 	
 		$('[id^="fan_switch"]').click(function(e){
@@ -1423,11 +1460,18 @@
 		
 		
 		<!-- value realtime update -->
-		
+		/*
 		$(document).ready(function(){
 			$("#dht11_block").load("realtime.php");
 			 setInterval(function(){
 				$("#dht11_block").load("realtime.php");
+			 }, 3000);
+		});
+		*/
+		$(document).ready(function(){
+			$("#temp_block").load("realtime_temp.php");
+			 setInterval(function(){
+				$("#temp_block").load("realtime_temp.php");
 			 }, 3000);
 		});
 		
@@ -1449,7 +1493,7 @@
 		
 		
 		
-		$("#dht11_data_block").load("realtime_past_data.php");
+		$("#temp_data_block").load("realtime_past_data.php");
 		
 		
 		$(document).ready(function(){
@@ -1461,7 +1505,7 @@
 							last_id_global=parseInt(data.split("<tr")[0]);
 						}else{
 							last_id_global=parseInt(data.split("<tr")[0]);
-							$("#dht11_data_block").append(data.split(last_id_global).pop());
+							$("#temp_data_block").append(data.split(last_id_global).pop());
 						}
 					}
 					
@@ -1499,8 +1543,8 @@
 		
 		function hideFunction(id){
 		  var belowDiv;
-		  var list=["collapseDHT","collapse2","collapse3","collapse4"];
-		  var card_list = ["dht11_card","level_card","turb_card","sensor4_card"];
+		  var list=["collapse1","collapse2","collapse3","collapse4"];
+		  var card_list = ["temp_card","level_card","turb_card","sensor4_card"];
 		  list.splice(list.indexOf(id),1);
 		  var a = document.getElementById(id);
 		  
@@ -1542,13 +1586,13 @@
 		});
 		
 		function overlay(){
-			var cookieValue = document.getElementById('dht11_block').getElementsByTagName("td")[0].innerText;
+			var cookieValue = document.getElementById('temp_block').getElementsByTagName("td")[0].innerText;
 			var tmp_tsh_value = getSavedValue("tmp_tsh");
 			//console.log(cookieValue, parseInt(tmp_tsh_value)); 
-			if(!document.getElementById("dht11_card").classList.contains('card-warning')){
+			if(!document.getElementById("temp_card").classList.contains('card-warning')){
 				if(parseInt(cookieValue) >= parseInt(tmp_tsh_value)){
-					document.getElementById("dht11_card").classList.remove('card');
-					document.getElementById("dht11_card").classList.add('card-warning');
+					document.getElementById("temp_card").classList.remove('card');
+					document.getElementById("temp_card").classList.add('card-warning');
 					
 					if(getSavedValue("line_toggle")=="true"){
 						jQuery.ajax({
@@ -1564,15 +1608,15 @@
 					alert("Temperature high");
 					
 				}else{
-					if(document.getElementById("dht11_card").classList.contains('card-warning') ){
-						document.getElementById("dht11_card").classList.remove('card-warning');
-						document.getElementById("dht11_card").classList.add('card');
+					if(document.getElementById("temp_card").classList.contains('card-warning') ){
+						document.getElementById("temp_card").classList.remove('card-warning');
+						document.getElementById("temp_card").classList.add('card');
 					}
 				}
 			}else{
 				if(parseInt(cookieValue) < parseInt(tmp_tsh_value)){
-					document.getElementById("dht11_card").classList.remove('card-warning');
-					document.getElementById("dht11_card").classList.add('card');
+					document.getElementById("temp_card").classList.remove('card-warning');
+					document.getElementById("temp_card").classList.add('card');
 				}
 			}
 			
@@ -1682,7 +1726,7 @@
 			console.log(saved_interval);
 			jQuery.ajax({
 				type: "POST",
-				url: 'http://192.168.50.50/arduino_web/sensor_interval.php',
+				url: 'sensor_interval.php',
 				dataType: 'json',
 				data: {
 					interval: [id, saved_interval]
@@ -1772,7 +1816,7 @@
 					order: order
 				},
 				success: function (response) {
-				  $("#dht11_data_block").html(response);
+				  $("#temp_data_block").html(response);
 				  
 				}
 			});

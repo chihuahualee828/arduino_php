@@ -264,8 +264,9 @@
 						
 						
                         <!-- Earnings (Monthly) Card Example -->
-						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseDHT"
-							aria-expanded="true" aria-controls="collapseDHT" onclick="">
+						<a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse1"
+							aria-expanded="true" aria-controls="collapse1" onclick="hideFunction('collapse1')">
+							
 							<span>
 								<div class="card border-left-arduino shadow h-100 py-2" id="feed_card">
 									<div class="card-body" >
@@ -299,6 +300,67 @@
 							</span>
 						</a>
 						
+						<div class="row-shrink  content-zoom2" >
+								<div class="col-xl-8 col-lg-7">
+								<div id="collapse1" class="collapse card border-left-arduino shadow h-10 py-2 animated--grow-in" >
+									<div class="card-body " >
+										<div class="row no-gutters align-items-center ">
+											<div class="col mr-2">
+												<table>
+													<tr>
+													<td>
+													<div class="text-xs font-weight-bold text-arduino text-uppercase mb-1" 
+													style=" font-size:30px; padding: 10px 10px 25px 3px;">
+														Auto Feed : </div>
+													</td>
+													<td style="padding: 0px 10px 10px 20px;">
+														<div id="auto_feed_switch">
+															<label class="switch" style="float:right;">
+															  <input type="checkbox" id="" onclick="">
+															  <span class="slider round" ></span>
+															</label>
+														</div>
+													</td>
+													</tr>
+												</table>
+												<div class="h5 mb-0 font-weight-bold text-gray-800" >
+													<div style="height:100px;">
+													<table>
+														<tr>
+															<td style="padding: 10px 10px 5px 5px;">Schedule(Hours):</td>
+															<td style="padding: 10px 10px 5px 5px;">
+																<input type="number" min="1" name="feed_interval" placeholder="12" size="4" id="feed_interval" />
+															</td>
+															<td></td>
+															<!--
+															<td style="padding: 10px 10px 5px 60px;">humidity</td>
+															<td style="padding: 10px 10px 5px 5px;">
+																<input type="text" name="hmd_tsh" placeholder="40" size="4" id="hmd_tsh" />
+															</td>
+															<td></td>
+															-->
+															<td style="padding: 10px 10px 5px 20px;">
+																<button class="bg-light border-arduino rounded" onclick="saveValue('feed_interval')" id="feed_set_btn">set</button>
+															</td>
+															
+															
+															
+														</tr>
+														
+													</table>	
+													</div>
+												</div>
+												
+												
+												
+												
+											</div>
+										</div>
+									</div>
+								</div>
+								</div>
+							
+						</div>
 						
 
 					
@@ -651,7 +713,7 @@
 		  
 			jQuery.ajax({
 				type: "POST",
-				url: 'http://192.168.50.65/arduino_web/motor_control.php',
+				url: 'https://192.168.50.65/arduino_web/motor_control.php',
 				dataType: 'json',
 				data: {
 					motor_turn: 'on'
@@ -801,7 +863,7 @@
 		
 		
 		function hideFunction(id){
-		  var list=["collapseDHT","collapse2","collapse3","collapse4"];
+		  var list=["collapse1","collapse2","collapse3","collapse4"];
 		  list.splice(list.indexOf(id),1);
 		  var a = document.getElementById(id);
 		  
@@ -812,6 +874,10 @@
 		  y.style.display = "none";
 		  z.style.display = "none";
 		  a.style.display = "";
+		  a.style.marginBottom = "100px";
+		  a.style.marginTop = "-3px";
+		  a.style.borderTopLeftRadius = "70px";
+		  
 		}
 		
 		
